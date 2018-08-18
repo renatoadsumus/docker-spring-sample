@@ -1,0 +1,9 @@
+{
+	"AWSEBDockerrunVersion": "1",
+	"Image": {
+		"Name": "renatoadsumus/docker-spring-sample:latest"
+	},
+	"Ports": [{
+		"ContainerPort": "8080"
+	}]
+}
