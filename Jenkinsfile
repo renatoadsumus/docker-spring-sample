@@ -12,8 +12,9 @@ pipeline {
 		stage('Build Aplicacao') { 
 			steps {				
 				echo "Building aplicacao com Gradle"				
-                //docker run --rm -v /opt/jenkins/workspace/deploy_app/:/codigo_da_aplicacao renatoadsumus/gradle:4.6"
-                sh "docker run --rm -v ${PWD}:/codigo_da_aplicacao renatoadsumus/gradle:4.6"							
+                sh "docker run --rm -v /opt/jenkins/workspace/deploy_app/:/codigo_da_aplicacao renatoadsumus/gradle:4.6"
+               
+			   // sh "docker run --rm -v ${PWD}:/codigo_da_aplicacao renatoadsumus/gradle:4.6"							
 			}			
 		}
 		
@@ -21,7 +22,7 @@ pipeline {
 		stage('Build Imagem Docker da Aplicacao') { 
 			steps {			
 				echo "Gerando a Imagem Docker da Aplicacao"	
-                ///sh "docker build -t renatoadsumus/docker-spring-sample ."			
+                sh "docker build -t renatoadsumus/docker-spring-sample ."			
 				//sh "docker login --username=renatoadsumus --password=${DOCKER_HUB_PASS}"
                 echo "### EXECUTANDO PUSH DA IMAGEM GERADA ###"
                 //sh "docker push renatoadsumus/docker-spring-sample"               
