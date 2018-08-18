@@ -11,10 +11,9 @@ pipeline {
 
 		stage('Build Aplicacao') { 
 			steps {				
-				echo "Building aplicacao com Gradle"
-				sh "ls"
+				echo "Building aplicacao com Gradle"				
                 //docker run --rm -v /opt/jenkins/workspace/deploy_app/:/codigo_da_aplicacao renatoadsumus/gradle:4.6"
-               // sh "docker run --rm -v ${PWD}/docker-spring-sample/:/codigo_da_aplicacao renatoadsumus/gradle:4.6"							
+                sh "docker run --rm -v ${PWD}:/codigo_da_aplicacao renatoadsumus/gradle:4.6"							
 			}			
 		}
 		
