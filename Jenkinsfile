@@ -1,15 +1,7 @@
 pipeline {
     agent any 
       
-    stages {      		
-
-	//stage('Git Clone Teste Funcional'){
-      //      steps{
-        //        git branch: 'master',
-                    
-          //          url: 'https://github.com/renatoadsumus/docker-spring-sample-test.git'                   
-            //}
-        //}
+    stages { 	
 
 		stage('Build e Analise Codigo') { 
 			steps {				
@@ -44,19 +36,10 @@ pipeline {
         stage('Run Aplicacao EB - AWS') { 
 			steps {			
 				echo "Gerando a Imagem Docker da Aplicacao"	                	
-				 sh "docker run --rm -v /opt/jenkins/workspace/deploy_app/eb/:/opt/artefato_deploy -e AWS_ACCESS_KEY_ID='${params.AWS_ACCESS_KEY_ID}' -e AWS_SECRET_ACCESS_KEY='${params.AWS_SECRET_ACCESS_KEY}' -e VERSAO='${env.BUILD_ID}' -e OPCAO='Novo' renatoadsumus/aws_cli:1.0"
+				 sh "docker run --rm -v /opt/jenkins/workspace/deploy_app/eb/:/opt/artefato_deploy -e AWS_ACCESS_KEY_ID='${AWS_ACCESS_KEY_ID}' -e AWS_SECRET_ACCESS_KEY='${AWS_SECRET_ACCESS_KEY}' -e VERSAO='${env.BUILD_ID}' -e OPCAO='Novo' renatoadsumus/aws_cli:1.0"
 						
 			}			
-		}
-
-		stage('Teste Funcional') { 
-			steps {
-
-				echo "Executando Teste Funcional"	
-			}
-
-		}	
-        
+		}        
     }
 	
 	post {
