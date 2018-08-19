@@ -3,7 +3,15 @@ pipeline {
       
     stages {      		
 
-		stage('Build Aplicacao') { 
+	stage('Git Clone Teste Funcional'){
+            steps{
+                git branch: 'master',
+                    
+                    url: 'https://github.com/renatoadsumus/docker-spring-sample-test.git'                   
+            }
+        }
+
+		stage('Build e Analise Codigo') { 
 			steps {				
 				echo "Building aplicacao com Gradle"				
                 sh "docker run --rm -v /opt/jenkins/workspace/deploy_app/:/codigo_da_aplicacao renatoadsumus/gradle:4.6"
@@ -32,6 +40,14 @@ pipeline {
 						
 			}			
 		}	
+
+		stage('Teste Funcional') { 
+			steps {
+
+				echo "Analise Sonar"	
+			}
+
+		}
 
         stage('Run Aplicacao Local') { 
 			steps {			
