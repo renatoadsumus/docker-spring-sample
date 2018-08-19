@@ -13,18 +13,17 @@ pipeline {
 
 		stage('Build e Analise Codigo') { 
 			steps {				
-				echo "Building aplicacao com Gradle"
-				sh "chmod +x /opt/jenkins/workspace/deploy_app/run_sonar.sh"				
-                sh "docker run --rm -v /opt/jenkins/workspace/deploy_app/:/opt/codigo_da_aplicacao renatoadsumus/gradle:4.6"
+				echo "Building aplicacao com Gradle"							
+                sh "docker run --rm -v /opt/jenkins/workspace/deploy_app/:/codigo_da_aplicacao renatoadsumus/gradle:4.6"
                
 			   // sh "docker run --rm -v ${PWD}:/codigo_da_aplicacao renatoadsumus/gradle:4.6"							
 			}			
 		}
 
-		stage('Analise Codigo') { 
+		stage('Analise Log') { 
 			steps {
 
-				echo "Analise Sonar"	
+				echo "Analisando Logs em busca de erro 500 e 503"	
 			}
 
 		}
