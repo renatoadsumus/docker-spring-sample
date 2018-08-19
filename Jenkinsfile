@@ -3,13 +3,13 @@ pipeline {
       
     stages {      		
 
-	stage('Git Clone Teste Funcional'){
-            steps{
-                git branch: 'master',
+	//stage('Git Clone Teste Funcional'){
+      //      steps{
+        //        git branch: 'master',
                     
-                    url: 'https://github.com/renatoadsumus/docker-spring-sample-test.git'                   
-            }
-        }
+          //          url: 'https://github.com/renatoadsumus/docker-spring-sample-test.git'                   
+            //}
+        //}
 
 		stage('Build e Analise Codigo') { 
 			steps {				
