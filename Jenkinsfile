@@ -36,41 +36,32 @@ pipeline {
 				sh "docker login --username=renatoadsumus --password=${DOCKER_HUB_PASS}"
                 echo "### EXECUTANDO PUSH DA IMAGEM GERADA ###"
                 sh "docker push renatoadsumus/docker-spring-sample"               
-                //sh "docker run --rm -e AWS_ACCESS_KEY_ID='${params.AWS_ACCESS_KEY_ID}' -e AWS_SECRET_ACCESS_KEY='${params.AWS_SECRET_ACCESS_KEY}' -e VERSAO='${env.BUILD_ID}' -e OPCAO='Novo' renatoadsumus/aws_cli:latest"
+               
 						
 			}			
-		}	
-
-		stage('Teste Funcional') { 
-			steps {
-
-				echo "Analise Sonar"	
-			}
-
-		}
-
-        stage('Run Aplicacao Local') { 
-			steps {			
-				echo "Gerando a Imagem Docker da Aplicacao"	
-                sh "docker run -d -p 8080:8080 renatoadsumus/docker-spring-sample"			
-				//sh "docker run --rm -e AWS_ACCESS_KEY_ID='${params.AWS_ACCESS_KEY_ID}' -e AWS_SECRET_ACCESS_KEY='${params.AWS_SECRET_ACCESS_KEY}' -e VERSAO='${env.BUILD_ID}' -e OPCAO='Novo' renatoadsumus/aws_cli:latest"
-						
-			}			
-		}
+		}	        
 
         stage('Run Aplicacao EB - AWS') { 
 			steps {			
 				echo "Gerando a Imagem Docker da Aplicacao"	                	
-				//sh "docker run --rm -e AWS_ACCESS_KEY_ID='${params.AWS_ACCESS_KEY_ID}' -e AWS_SECRET_ACCESS_KEY='${params.AWS_SECRET_ACCESS_KEY}' -e VERSAO='${env.BUILD_ID}' -e OPCAO='Novo' renatoadsumus/aws_cli:latest"
+				 sh "docker run --rm -v /opt/jenkins/workspace/deploy_app/eb/:/opt/artefato_deploy -e AWS_ACCESS_KEY_ID='${params.AWS_ACCESS_KEY_ID}' -e AWS_SECRET_ACCESS_KEY='${params.AWS_SECRET_ACCESS_KEY}' -e VERSAO='${env.BUILD_ID}' -e OPCAO='Novo' renatoadsumus/aws_cli:1.0"
 						
 			}			
+		}
+
+		stage('Teste Funcional') { 
+			steps {
+
+				echo "Executando Teste Funcional"	
+			}
+
 		}	
         
     }
 	
-	//post {
-	//	always {
-	//	cleanWs()
-	//	}
-	//}
+	post {
+		always {
+		cleanWs()
+		}
+	}
  }
