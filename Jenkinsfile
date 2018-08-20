@@ -13,7 +13,13 @@ pipeline {
 	{ 	
 
 		stage('Build e Analise Codigo') { 
-			steps {				
+			steps {	
+				slackSend (color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+
+        // send to HipChat
+        hipchatSend (color: 'YELLOW', notify: true,
+            message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
+          )			
 				echo "Building aplicacao com Gradle"							
                 sh "docker run --rm -v /opt/jenkins/workspace/deploy_app/:/codigo_da_aplicacao renatoadsumus/gradle:4.6"
                			  							
@@ -54,6 +60,24 @@ pipeline {
 		always {
 		cleanWs()
 		}
+
+		success {
+      slackSend (color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+
+      hipchatSend (color: 'GREEN', notify: true,
+          message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
+        )
+
+  
+    }
+	
+	failure {
+      slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+
+      hipchatSend (color: 'RED', notify: true,
+          message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
+        )     
+    }
 	} 	
 
 }
