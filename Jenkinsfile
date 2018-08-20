@@ -1,6 +1,14 @@
 pipeline {
     agent any 
       
+	 parameters {
+    choice(
+        name: 'TipoDeploy',
+        choices: "PrimeiroDeploy\nDeployRecorrente",
+        description: 'Validacao e Deploy na AWS' 
+		)
+  }
+
     stages { 	
 
 		stage('Build e Analise Codigo') { 
@@ -33,13 +41,27 @@ pipeline {
 			}			
 		}	        
 
-        stage('Run Aplicacao EB - AWS') { 
+       stage('Criando Ambiente e Deploy - EB AWS') { 
 			steps {			
 				echo "Gerando a Imagem Docker da Aplicacao"	                	
 				 sh "docker run --rm -v /opt/jenkins/workspace/deploy_app/eb/:/opt/artefato_deploy -e AWS_ACCESS_KEY_ID='${AWS_ACCESS_KEY_ID}' -e AWS_SECRET_ACCESS_KEY='${AWS_SECRET_ACCESS_KEY}' -e VERSAO='${env.BUILD_ID}' -e OPCAO='Novo' renatoadsumus/aws_cli:1.0"
 						
-			}			
-		}        
+			}
+			when {               
+                expression { params.TipoDeploy == 'PrimeiroDeploy' }
+            }			
+		}   
+
+		stage('CDeploy- EB AWS') { 
+			steps {			
+				echo "Gerando a Imagem Docker da Aplicacao"	                	
+				 sh "docker run --rm -v /opt/jenkins/workspace/deploy_app/eb/:/opt/artefato_deploy -e AWS_ACCESS_KEY_ID='${AWS_ACCESS_KEY_ID}' -e AWS_SECRET_ACCESS_KEY='${AWS_SECRET_ACCESS_KEY}' -e VERSAO='${env.BUILD_ID}' -e OPCAO='Deploy' renatoadsumus/aws_cli:1.0"
+						
+			}
+			when {               
+                expression { params.TipoDeploy == 'DeployRecorrente' }
+            }			
+		}       
     }
 	
 	post {
