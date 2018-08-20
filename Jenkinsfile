@@ -7,9 +7,10 @@ pipeline {
         choices: "PrimeiroDeploy\nDeployRecorrente",
         description: 'Validacao e Deploy na AWS' 
 		)
-  }
+  	}
 
-    stages { 	
+    stages 
+	{ 	
 
 		stage('Build e Analise Codigo') { 
 			steps {				
@@ -47,10 +48,12 @@ pipeline {
 						
 			}						
 		}  	
-	
+	}
+
 	post {
 		always {
 		cleanWs()
 		}
-	}
- }
+	} 	
+
+}
