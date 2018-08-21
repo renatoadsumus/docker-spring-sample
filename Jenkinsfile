@@ -1,13 +1,18 @@
 pipeline {
     agent any 
       
-	 parameters {
+	parameters {
     choice(
         name: 'TipoDeploy',
         choices: "PrimeiroDeploy\nDeployRecorrente",
         description: 'Validacao e Deploy na AWS' 
 		)
   	}
+
+	  environment {
+		  VERSAO_GIT = '$(git rev-parse HEAD | cut -c 1-10)'
+
+	  }
 
     stages 
 	{ 	
@@ -37,11 +42,12 @@ pipeline {
 		stage('Build Imagem Docker da Aplicacao') { 
 			steps {			
 				echo "Gerando a Imagem Docker da Aplicacao"	
-                sh "docker build -t renatoadsumus/docker-spring-sample ."			
+                sh "docker build -t renatoadsumus/docker-spring-sample ."
+				sh "docker tag renatoadsumus/docker-spring-sample:latest renatoadsumus/docker-spring-sample:{$VERSAO_GIT}"				
 				sh "docker login --username=renatoadsumus --password=${DOCKER_HUB_PASS}"
                 echo "### EXECUTANDO PUSH DA IMAGEM GERADA ###"
-                sh "docker push renatoadsumus/docker-spring-sample"               
-               
+                sh "docker push renatoadsumus/docker-spring-sample"   
+				sh "docker push renatoadsumus/docker-spring-sample:{$VERSAO_GIT}" 
 						
 			}			
 		}	        
