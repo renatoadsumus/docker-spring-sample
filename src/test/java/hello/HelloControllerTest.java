@@ -20,14 +20,27 @@ import static org.hamcrest.CoreMatchers.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class HelloControllerTest {
 
+    @LocalServerPort
+    private int port;
+
+    private URL base;
+
+    @Autowired
+    private TestRestTemplate template;
+
+    @Before
+    public void setUp() throws Exception {
+        this.base = new URL("http://localhost:" + port + "/");
+    }
 
     @Test
-    public void getHello() throws Exception {
+    public void getMainContentNoEmpty() throws Exception {
 
         String resultadoEsperado = "Greetings from Spring Boot!";
-        String resultadoAtual = "Greetings from Spring Boot!";
 
-        assertThat(resultadoAtual, is(equalTo(resultadoEsperado)));
+        ResponseEntity<String> response = template.getForEntity(base.toString(),
+                String.class);
+        assertThat(response.getBody(), equalTo(resultadoEsperado));
 
     }
 
