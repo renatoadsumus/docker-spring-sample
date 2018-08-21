@@ -28,5 +28,4 @@ hs_err_pid*
 .settings/
 build/
 /.metadata
-/src/test
 /.idea
