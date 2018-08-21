@@ -16,7 +16,7 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
-
+apply plugin: 'jacoco'
 
 bootJar {
     baseName = 'gs-spring-boot'
@@ -32,5 +32,15 @@ targetCompatibility = 1.8
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
-    testCompile("junit:junit")
+    testCompile 'junit:junit:4.12'
+    compile 'junit:junit:4.12'
+    compile 'org.springframework.boot:spring-boot-starter-test'
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination file("${buildDir}/jacocoHtml")
+    }
 }
