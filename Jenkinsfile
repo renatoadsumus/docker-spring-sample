@@ -43,7 +43,7 @@ pipeline {
 			steps {			
 				echo "Gerando a Imagem Docker da Aplicacao"	
                 sh "docker build -t renatoadsumus/docker-spring-sample ."
-				sh "docker tag renatoadsumus/docker-spring-sample:latest renatoadsumus/docker-spring-sample:{$VERSAO_GIT}"				
+				sh "docker tag renatoadsumus/docker-spring-sample:latest renatoadsumus/docker-spring-sample:$VERSAO_GIT"				
 				sh "docker login --username=renatoadsumus --password=${DOCKER_HUB_PASS}"
                 echo "### EXECUTANDO PUSH DA IMAGEM GERADA ###"
                 sh "docker push renatoadsumus/docker-spring-sample"   
