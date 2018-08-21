@@ -25,7 +25,7 @@ pipeline {
             	message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
           )			
 				echo "Building aplicacao com Gradle"							
-                sh "docker run --rm -v /opt/jenkins/workspace/deploy_app/:/codigo_da_aplicacao renatoadsumus/gradle:4.6"
+                sh "docker run --rm -v /opt/jenkins/workspace/deploy_app/:/codigo_da_aplicacao renatoadsumus/gradle:4.9"
                			  							
 			}			
 		}
@@ -58,6 +58,12 @@ pipeline {
 		}	        
 
        stage('Deploy - EB AWS') { 
+			
+			when {
+              expression {
+                currentBuild.result == null || currentBuild.result == 'SUCCESS' 
+              }
+            }
 			steps {			
 				echo "####################################"
 				echo "Gerando a Imagem Docker da Aplicacao"	
