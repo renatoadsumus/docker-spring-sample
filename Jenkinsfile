@@ -46,7 +46,7 @@ pipeline {
 				echo "####################################"
                 sh "docker build -t renatoadsumus/docker-spring-sample ."				
 				echo "####################################"
-				echo "SHA commit GITHUB: ${$VERSAO_GIT}" 
+				echo "SHA commit GITHUB: ${env.$VERSAO_GIT}" 
 				echo "####################################"
 				sh "docker tag renatoadsumus/docker-spring-sample renatoadsumus/docker-spring-sample:$VERSAO_GIT"				
 				sh "docker login --username=renatoadsumus --password=${DOCKER_HUB_PASS}"
@@ -74,22 +74,22 @@ pipeline {
 		//}
 
 		success {
-      slackSend (color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+      		slackSend (color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
 
-      hipchatSend (color: 'GREEN', notify: true,
-          message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
+      		hipchatSend (color: 'GREEN', notify: true,
+          	message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
         )
 
   
-    }
+    	}
 	
-	failure {
-      slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+		failure {
+      		slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
 
-      hipchatSend (color: 'RED', notify: true,
-          message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
-        )     
-    }
+      		hipchatSend (color: 'RED', notify: true,
+          	message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
+        	)     
+    	}
 	} 	
 
 }
