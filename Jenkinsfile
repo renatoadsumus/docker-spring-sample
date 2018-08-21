@@ -48,7 +48,7 @@ pipeline {
 				sh "docker login --username=renatoadsumus --password=${DOCKER_HUB_PASS}"
                 echo "### EXECUTANDO PUSH DA IMAGEM GERADA ###"
                 sh "docker push renatoadsumus/docker-spring-sample"   
-				sh "docker push renatoadsumus/docker-spring-sample:{$VERSAO_GIT}" 
+				sh "docker push renatoadsumus/docker-spring-sample:$VERSAO_GIT" 
 						
 			}			
 		}	        
