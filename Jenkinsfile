@@ -46,7 +46,7 @@ pipeline {
 				echo "####################################"
                 sh "docker build -t renatoadsumus/docker-spring-sample ."				
 				echo "####################################"
-				echo "SHA commit GITHUB: ${env.$VERSAO_GIT}" 
+				echo "SHA commit GITHUB:" + env.VERSAO_GIT
 				echo "####################################"
 				sh "docker tag renatoadsumus/docker-spring-sample renatoadsumus/docker-spring-sample:$VERSAO_GIT"				
 				sh "docker login --username=renatoadsumus --password=${DOCKER_HUB_PASS}"
@@ -68,16 +68,17 @@ pipeline {
 				echo "####################################"
 				echo "Gerando a Imagem Docker da Aplicacao"	
 				echo "####################################"               	
-				 sh "docker run --rm -v /opt/jenkins/workspace/deploy_app/eb/:/opt/artefato_deploy -e AWS_ACCESS_KEY_ID='${AWS_ACCESS_KEY_ID}' -e AWS_SECRET_ACCESS_KEY='${AWS_SECRET_ACCESS_KEY}' -e VERSAO='${env.BUILD_ID}' -e OPCAO='${params.TipoDeploy}' renatoadsumus/aws_cli:1.0"
+				 sh "docker run --rm -v /opt/jenkins/workspace/deploy_app/eb/:/opt/artefato_deploy -e AWS_ACCESS_KEY_ID='${AWS_ACCESS_KEY_ID}' -e AWS_SECRET_ACCESS_KEY='${AWS_SECRET_ACCESS_KEY}' -e VERSAO='${env.BUILD_ID}' -e OPCAO='${params.TipoDeploy}' renatoadsumus/aws_cli:2.0"
 						
 			}						
 		}  	
 	}
 
 	post {
-		//always {
-		//cleanWs()
-		//}
+		
+		always {
+			cleanWs()
+		}
 
 		success {
       		slackSend (color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
